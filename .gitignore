@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# My Personal Resources
+*.pdf
+*.org
