@@ -18,20 +18,21 @@ public:
     Vector2();
     Vector2(real x, real y);
     
-    void operator=(const Vector2& other);
     Vector2 operator-(const Vector2& other);
     Vector2 operator+(const Vector2& other);
     Vector2 operator*(const Vector2& other);
     Vector2 operator-(real scalar);
     Vector2 operator+(real scalar);
     Vector2 operator*(real scalar);
+    Vector2 operator/(real scalar);
 
-    void operator-=(const Vector2& other);
     void operator+=(const Vector2& other);
+    void operator-=(const Vector2& other);
     void operator*=(const Vector2& other); 
-    void operator-=(real scalar);
     void operator+=(real scalar);
+    void operator-=(real scalar);
     void operator*=(real scalar);
+    void operator/=(real scalar);
 
     void invert();
     real square_magnitude();
@@ -40,9 +41,6 @@ public:
     Vector2 normalize();
 
     void print();
-private:
-    Vector2 operator/(real scalar);
-    void operator/=(real scalar);
 };
 
     
@@ -55,7 +53,6 @@ public:
     Vector3();
     Vector3(real x, real y, real z);
 
-    void operator=(const Vector3& other);
     Vector3 operator-(const Vector3& other);
     Vector3 operator+(const Vector3& other);
     Vector3 operator*(const Vector3& other);

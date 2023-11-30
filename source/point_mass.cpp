@@ -9,6 +9,7 @@ PointMass::PointMass(const Vector2& position, real damping, real mass) {
     this->damping = damping;
     this->velocity = Vector2();
     this->acceleration = Vector2();
+    this->forceAccum = Vector2();
 
 }
 
@@ -40,4 +41,3 @@ void PointMass::integrate(real delta_time) {
 
     this->clear_force_accum();
 }
-

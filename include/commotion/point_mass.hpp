@@ -23,7 +23,7 @@ public:
 
     void add_force(const Vector2& force);
     void clear_force_accum();
-    
+
     void integrate(real delta_time);
 };
 

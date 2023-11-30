@@ -3,9 +3,10 @@
 #include <iostream>
 #include <vector>
 
-#include <commotion/precision.hpp>
-#include <commotion/math.hpp>
-#include <commotion/point_mass.hpp>
+#include "commotion/precision.hpp"
+#include "commotion/math.hpp"
+#include "commotion/point_mass.hpp"
+#include "commotion/point_mass_force_generator.hpp"
 
 
 int main(void) {
@@ -13,34 +14,30 @@ int main(void) {
     const int SCREEN_HEIGHT = 720;
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "commotion");
-    
-    std::vector<Commotion::PointMass> bullets;
+
+    Commotion::PointMassForceRegistry point_mass_registry;
+
+    Commotion::PointMass ball(Commotion::Vector2(SCREEN_WIDTH/2, 0), 0.999, 5);
+    Commotion::PointMassGravity gravity(Commotion::Vector2(0, 9.8));
+    point_mass_registry.add(&ball, &gravity);
+
+    Commotion::real dt = 0.03;
 
     while (!WindowShouldClose()) {
         // UPDATE
-        for (auto& bullet : bullets) {
-            bullet.integrate(0.033);
-        }
+        point_mass_registry.updateForces(dt);
+        ball.integrate(dt);
 
-        if (IsMouseButtonPressed(0)) {
-            Vector2 mp = GetMousePosition();
-            Commotion::PointMass newBullet = Commotion::PointMass(Commotion::Vector2(mp.x, mp.y), 0.999, 2);
-            newBullet.acceleration.y = 1;
-            bullets.push_back(Commotion::PointMass(newBullet));
-        }
-
-        // DRAW        
+        // DRAW
         BeginDrawing();
         ClearBackground(BLACK);
 
-        for (auto& bullet : bullets) {
-            DrawCircle(bullet.position.x, bullet.position.y, 5, YELLOW);
-        }
+        DrawCircle(ball.position.x, ball.position.y, 5, YELLOW);
 
         EndDrawing();
     }
 
     CloseWindow();
-    
+
     return 0;
 }

@@ -16,12 +16,6 @@ Vector2::Vector2(real x, real y) {
 }
 
 
-void Vector2::operator=(const Vector2& other) {
-    this->x = other.x;
-    this->y = other.y;
-}
-
-
 Vector2 Vector2::operator-(const Vector2& other) {
     return Vector2(this->x - other.x, this->y - other.y);
 }
@@ -57,15 +51,15 @@ Vector2 Vector2::operator/(real scalar) {
 }
 
 
-void Vector2::operator-=(const Vector2& other) {
-    this->x -= other.x;
-    this->y -= other.y;
-}
-
-
 void Vector2::operator+=(const Vector2& other) {
     this->x += other.x;
     this->y += other.y;
+}
+
+
+void Vector2::operator-=(const Vector2& other) {
+    this->x -= other.x;
+    this->y -= other.y;
 }
 
 
@@ -110,7 +104,7 @@ real Vector2::square_magnitude() {
 
 
 real Vector2::magnitude() {
-    return sqrt(this->square_magnitude());
+    return sqrtf(this->x * this->x + this->y * this->y);
 }
 
 
@@ -140,13 +134,6 @@ Vector3::Vector3(real x, real y, real z) {
     this->x = x;
     this->y = y;
     this->z = z;
-}
-
-
-void Vector3::operator=(const Vector3& other) {
-    this->x = other.x;
-    this->y = other.y;
-    this->z = other.z;
 }
 
 
