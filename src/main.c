@@ -70,18 +70,19 @@ int main(void) {
 				.y = target->state.position.y,
 			};
 		}
-		for (int i = 0; i < num_bodies; i++) {
+		for (size_t i = 0; i < num_bodies; i++) {
 			body_draw(&bodies[i], target);
 		}
 		EndMode2D();
-		DrawFPS(10, 10);
-
+		
 		draw_menu(target);
-
+		
 		if (paused) {
 			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Fade(BLACK, 0.5f));
-			DrawText("PAUSED!!!", HALF_SCREEN_WIDTH, HALF_SCREEN_HEIGHT - 24, 48, RED);
+			int halfText = MeasureText("PAUSED!!!", 48)/2;
+			DrawText("PAUSED!!!", HALF_SCREEN_WIDTH - halfText, HALF_SCREEN_HEIGHT - 24, 48, RED);
 		}
+		DrawFPS(10, 10);
 
 		EndDrawing();
 
@@ -121,7 +122,7 @@ int main(void) {
 			body_add_force(moon, orbit(earth, moon));
 
 			// TODO: move this to a bodies_* function
-			for (int i = 0; i < num_bodies; i++) {
+			for (size_t i = 0; i < num_bodies; i++) {
 				body_integrate(&bodies[i], dt);
 			}
 		}
