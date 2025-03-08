@@ -7,44 +7,21 @@
 #include "kinematics/forces.h"
 #include "kinematics/bodies.h"
 #include "ui/menu.h"
-
-void reset() {
-	fprintf(stderr, "resetting\n");
-
-	num_bodies = 0;
-
-	Body* b = body_create(vec2(0, 0), 50.0f, 50.0f);
-	assert(b);
-}
+#include "demo/demo.h"
 
 int main(void) {
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "commotion");
-
-	Camera2D camera;
-	camera.offset = (Vector2){
-		HALF_SCREEN_WIDTH,
-		HALF_SCREEN_HEIGHT
-	};
-	camera.target = (Vector2){0};
-	camera.rotation = 0.0f;
-	camera.zoom = 0.45E-6f;
-
-	float t = 0.0f;
-	float dt = 0.01f;
-	float accumulator = 0.0f;
-	float lastTime = GetTime();
 	
-	// TODO: Initializer would be nice
-	#define VISUAL_SCALING_FACTOR 10.0f
-	Body* earth = body_create(vec2(0, 0), EARTH_MASS, EARTH_RADIUS * VISUAL_SCALING_FACTOR);
-	assert(earth);
+	Camera2D camera;
 
-	Body* moon = body_create(vec2(LUNAR_DISTANCE, 0), MOON_MASS, MOON_RADIUS * VISUAL_SCALING_FACTOR);
-	assert(moon);
-	#undef VISUAL_SCALING_FACTOR
-
+	real t = 0.0f;
+	real dt = 0.01f;
+	real accumulator = 0.0f;
+	real lastTime = GetTime();
+	
+	demo_init(&camera);
+	
 	Body* target = NULL;
-
 	bool paused = false;
 
 	while (!WindowShouldClose()) {
@@ -53,18 +30,13 @@ int main(void) {
 		lastTime = currentTime;
 
 		if (!paused) {
-			accumulator += frameTime * 10;
+			accumulator += frameTime * 10.0f;
 		}
-		
+
 		BeginDrawing();
 		ClearBackground(BLACK);
 		BeginMode2D(camera);
-		if (!target) {
-			camera.target = (Vector2){
-				.x = earth->state.position.x,
-				.y = earth->state.position.y,
-			};
-		} else {
+		if (target) {
 			camera.target = (Vector2){
 				.x = target->state.position.x,
 				.y = target->state.position.y,
@@ -74,7 +46,7 @@ int main(void) {
 			body_draw(&bodies[i], target);
 		}
 		EndMode2D();
-		
+
 		draw_menu(target);
 		
 		if (paused) {
@@ -92,35 +64,25 @@ int main(void) {
 			Vector2 world = GetScreenToWorld2D(mouse, camera);
 
 			Vec2 position = vec2(world.x, world.y);			
-			target = body_get(position);
+			target = bodies_nearest(position);
 		}
 
-		#define ROTATION_FORCE 1E32
-		// https://gamedev.stackexchange.com/questions/70075/how-can-i-find-the-perpendicular-to-a-2d-vector
-		if (IsKeyPressed(KEY_W)) {
-			Vec2 direction = vec2_subv(moon->state.position, earth->state.position);
-			Vec2 clockwise_orbit = vec2_unit(vec2(direction.y, -direction.x));
-			Vec2 force = vec2_mulr(clockwise_orbit, ROTATION_FORCE);
-			body_add_force(moon, force);			
+		// Reset scene :)
+		if (IsKeyPressed(KEY_R)) {
+			bodies_clear();
+			accumulator = 0;
+			demo_init(&camera);
 		}
-		if (IsKeyPressed(KEY_S)) {
-			Vec2 direction = vec2_subv(moon->state.position, earth->state.position);
-			Vec2 anticlockwise_orbit = vec2_unit(vec2(-direction.y, direction.x));
-			Vec2 force = vec2_mulr(anticlockwise_orbit, ROTATION_FORCE);
-			body_add_force(moon, force);			
-		}
-		#undef ROTATION_FORCE
 
-		if (IsKeyPressed(KEY_R)) reset();
-		if (IsKeyPressed(KEY_SPACE)) paused = !paused;
-		
-		if (accumulator >= dt && !paused) {
+		if (IsKeyPressed(KEY_SPACE)) {
+			paused = !paused;
+		}
+
+		while (accumulator >= dt && !paused) {
 			t += dt;
 			accumulator -= dt;
 
-			body_add_force(earth, orbit(moon, earth));
-			body_add_force(moon, orbit(earth, moon));
-
+			demo_update(dt);
 			// TODO: move this to a bodies_* function
 			for (size_t i = 0; i < num_bodies; i++) {
 				body_integrate(&bodies[i], dt);

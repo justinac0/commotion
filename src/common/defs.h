@@ -11,6 +11,7 @@
 
 // MISC CONSTANTS
 #define METER_SCALE_PX (1)
+#define VISUAL_SCALING_FACTOR 10.0f
 
 // TYPES
 typedef double real;

@@ -1,7 +1,7 @@
 #ifndef BODIES_H
 #define BODIES_H
 
-#define MAX_BODIES (10)
+#define MAX_BODIES (512)
 
 #include <raylib.h>
 
@@ -11,9 +11,11 @@
 extern Body bodies[MAX_BODIES];
 extern size_t num_bodies;
 
-Body* body_create(Vec2 position, real mass, real radius);
-bool body_destroy(Body* b);
-bool body_contains(Body* b, Vec2 position);
-Body* body_get(Vec2 position);
+Body* bodies_add(Vec2 position, real mass, real radius);
+bool bodies_remove(Body* b);
+bool bodies_get_body(Body* b, Vec2 position);
+void bodies_clear();
+
+Body* bodies_nearest(Vec2 position); // TODO: find nearest to position
 
 #endif // BODIES_H

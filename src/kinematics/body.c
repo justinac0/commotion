@@ -6,7 +6,7 @@ void body_draw(Body *b, Body *target) {
     if (b == NULL) return;
 
     if (target == b) {
-        DrawCircle(b->state.position.x, b->state.position.y, b->radius + b->radius/4, YELLOW);
+        DrawCircle(b->state.position.x, b->state.position.y, b->radius + b->radius*0.25, YELLOW);
     }
 
     DrawCircle(b->state.position.x, b->state.position.y, b->radius, b->color);

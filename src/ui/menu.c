@@ -13,8 +13,8 @@ void draw_menu(Body* target) {
 
 	DrawRectangle(SCREEN_WIDTH - MENU_WIDTH, 0, MENU_WIDTH, SCREEN_HEIGHT, GRAY);
 
-	const int currentY = MENU_PADDING;
-	
+	int currentY = MENU_PADDING;
+
 	char value[MAX_TEXT_SIZE];
 
 	snprintf(value, MAX_TEXT_SIZE, "%p", target);
@@ -41,4 +41,3 @@ void draw_text_field(const char* label, const char* value, int* currentY) {
 	DrawText(label, x, y, TEXT_SIZE, WHITE);
 	DrawText(value, x, y + TEXT_HEIGHT, TEXT_SIZE, WHITE);
 }
-

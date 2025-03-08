@@ -5,7 +5,7 @@
 Body bodies[MAX_BODIES];
 size_t num_bodies = 0;
 
-Body* body_create(Vec2 position, real mass, real radius) {
+Body* bodies_add(Vec2 position, real mass, real radius) {
 	if (num_bodies >= MAX_BODIES) {
 		return NULL;
 	}
@@ -24,7 +24,7 @@ Body* body_create(Vec2 position, real mass, real radius) {
 	return b;
 }
 
-bool body_destroy(Body* b) {
+bool bodies_remove(Body* b) {
 	if (b == NULL) {
 		return false;
 	}
@@ -44,7 +44,7 @@ bool body_destroy(Body* b) {
 	return false;
 }
 
-bool body_contains(Body* b, Vec2 position) {
+bool bodies_get_body(Body* b, Vec2 position) {
 	if (b == NULL) {
 		return false;
 	}
@@ -53,11 +53,15 @@ bool body_contains(Body* b, Vec2 position) {
 	return vec2_mag(distance) <= b->radius;
 }
 
+void bodies_clear() {
+	num_bodies = 0;
+}
+
 // returns the first body found at the given position, overlapping bodies are not supported
-Body* body_get(Vec2 position) {
+Body* bodies_nearest(Vec2 position) {
 	for (size_t i = 0; i < num_bodies; i++) {
 		// check if this 
-		if (body_contains(bodies + i, position)) {
+		if (bodies_get_body(bodies + i, position)) {
 			return bodies + i;
 		}
 	}
