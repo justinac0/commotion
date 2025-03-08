@@ -5,6 +5,10 @@ LDFLAGS=-lraylib -lgdi32 -lwinmm
 APP_NAME=commotion
 EXEC=bin/$(APP_NAME)
 
+ifndef DEMO
+DEMO=orbit
+endif
+
 SOURCES=$(wildcard src/*.c src/**/*.c) src/demo/impl/$(DEMO).c
 HEADERS = $(wildcard src/*.h src/**/*.h)
 OBJS=$(SOURCES:.c=.o)
