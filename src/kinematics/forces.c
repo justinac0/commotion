@@ -11,7 +11,7 @@ Vec2 gravity(real mass) {
 	};
 }
 
-Vec2 orbit(Body *a, Body *b) {
+Vec2 orbit(Body *a, Body *b, real G) {
 	if (a == NULL || b == NULL) return vec2(0, 0);
 	
 	Vec2 dir = vec2_subv(a->state.position, b->state.position); // direction vector from b to a

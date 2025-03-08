@@ -7,6 +7,14 @@
 #include "../../kinematics/forces.h"
 #include "../demo.h"
 
+// PHYSICAL CONSTANTS
+#define G ((real) 6.67430E-11)
+#define EARTH_MASS ((real) 5.972E24)
+#define EARTH_RADIUS ((real) 6371E3)
+#define MOON_MASS ((real) 7.35E22)
+#define MOON_RADIUS ((real) 1737.5E3)
+#define LUNAR_DISTANCE ((real) 385000E3)
+
 static Body* earth = NULL;
 static Body* moon = NULL;
 static Body* a = NULL;
@@ -25,7 +33,7 @@ void demo_init(Camera2D *camera) {
     
     moon = bodies_add(vec2(LUNAR_DISTANCE, 0), MOON_MASS, MOON_RADIUS * VISUAL_SCALING_FACTOR);
     assert(moon);
-    
+
     a = bodies_add(vec2(LUNAR_DISTANCE+5E7, 0), MOON_MASS/2, MOON_RADIUS/2 * VISUAL_SCALING_FACTOR);
     assert(a);
     
@@ -40,12 +48,12 @@ void demo_init(Camera2D *camera) {
 }
 
 void demo_update(real dt) {
-    body_add_force(earth, orbit(moon, earth));
-    body_add_force(earth, orbit(a, earth));
+    body_add_force(earth, orbit(moon, earth, G));
+    body_add_force(earth, orbit(a, earth, G));
 
-    body_add_force(moon, orbit(earth, moon));
-    body_add_force(moon, orbit(a, moon));
+    body_add_force(moon, orbit(earth, moon, G));
+    body_add_force(moon, orbit(a, moon, G));
 
-    body_add_force(a, orbit(earth, a));
-    body_add_force(a, orbit(moon, a));
+    body_add_force(a, orbit(earth, a, G));
+    body_add_force(a, orbit(moon, a, G));
 }

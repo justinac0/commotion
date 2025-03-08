@@ -7,6 +7,6 @@
 
 real spring(real x0, real x, float v, real k, real damp);
 Vec2 gravity(real mass);
-Vec2 orbit(Body *a, Body *b);
+Vec2 orbit(Body *a, Body *b, real G);
 
 #endif // FORCES_H
