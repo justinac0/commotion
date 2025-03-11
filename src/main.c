@@ -45,6 +45,7 @@ int main(void) {
 		BeginDrawing();
 		ClearBackground(BLACK);
 		if (paused) {
+			target = NULL;
 			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Fade(MAGENTA, 0.1f));
 		}
 		BeginMode2D(camera);
@@ -58,7 +59,7 @@ int main(void) {
 			body_draw(&bodies[i], target);
 		}
 		
-		if (dragState.isDragging && dragState.target) {
+		if (dragState.isDragging && dragState.target && paused) {
 			Body ghost = *dragState.target;
 			ghost.color = Fade(ghost.color, 0.5f);
 			ghost.state.position = dragState.targetPosition;
@@ -84,7 +85,7 @@ int main(void) {
 				target = found_body;
 			}
 
-			if (found_body) {
+			if (found_body && paused) {
 				dragState.target = found_body;
 				dragState.isDragging = true;
 				dragState.targetPosition = found_body->state.position;
