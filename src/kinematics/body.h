@@ -28,7 +28,7 @@ typedef struct State {
 
 typedef struct Body {
     State state;
-    float radius;
+    float radius; // TODO: add ability to define shapes...
     Color color;
 } Body;
 

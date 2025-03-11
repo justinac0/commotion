@@ -12,7 +12,7 @@ extern Body bodies[MAX_BODIES];
 extern size_t num_bodies;
 
 Body* bodies_add(Vec2 position, real mass, real radius);
-bool bodies_remove(Body* b);
+// bool bodies_remove(Body* b); // kinda broken do not use
 bool bodies_get_body(Body* b, Vec2 position);
 void bodies_clear();
 

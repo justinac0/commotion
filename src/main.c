@@ -9,6 +9,13 @@
 #include "ui/menu.h"
 #include "demo/demo.h"
 
+typedef struct {
+	Body* target;
+	bool isDragging;
+	Vec2 targetPosition;
+} DragState;
+#define DRAGSTATE_NONE ((DragState){.target = NULL, .isDragging = false, .targetPosition = vec2(0, 0)})
+
 int main(void) {
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "commotion");
 	
@@ -22,6 +29,8 @@ int main(void) {
 	demo_init(&camera);
 	
 	Body* target = NULL;
+	DragState dragState = DRAGSTATE_NONE;
+
 	bool paused = false;
 
 	while (!WindowShouldClose()) {
@@ -35,6 +44,9 @@ int main(void) {
 
 		BeginDrawing();
 		ClearBackground(BLACK);
+		if (paused) {
+			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Fade(MAGENTA, 0.1f));
+		}
 		BeginMode2D(camera);
 		if (target) {
 			camera.target = (Vector2){
@@ -45,15 +57,17 @@ int main(void) {
 		for (size_t i = 0; i < num_bodies; i++) {
 			body_draw(&bodies[i], target);
 		}
+		
+		if (dragState.isDragging && dragState.target) {
+			Body ghost = *dragState.target;
+			ghost.color = Fade(ghost.color, 0.5f);
+			ghost.state.position = dragState.targetPosition;
+			body_draw(&ghost, target);
+		}
 		EndMode2D();
 
 		draw_menu(target);
 		
-		if (paused) {
-			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Fade(BLACK, 0.5f));
-			int halfText = MeasureText("PAUSED!!!", 48)/2;
-			DrawText("PAUSED!!!", HALF_SCREEN_WIDTH - halfText, HALF_SCREEN_HEIGHT - 24, 48, RED);
-		}
 		DrawFPS(10, 10);
 
 		EndDrawing();
@@ -62,9 +76,35 @@ int main(void) {
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 			Vector2 mouse = GetMousePosition();
 			Vector2 world = GetScreenToWorld2D(mouse, camera);
+			
+			Vec2 position = vec2(world.x, world.y);
+			Body* found_body = bodies_nearest(position);
 
-			Vec2 position = vec2(world.x, world.y);			
-			target = bodies_nearest(position);
+			if (!paused) {
+				target = found_body;
+			}
+
+			if (found_body) {
+				dragState.target = found_body;
+				dragState.isDragging = true;
+				dragState.targetPosition = found_body->state.position;
+			} else {
+				dragState = DRAGSTATE_NONE;
+			}
+		}
+
+		if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+			if (dragState.isDragging && dragState.target) {
+				dragState.target->state.position = dragState.targetPosition;
+				dragState = DRAGSTATE_NONE;
+			}
+		}
+
+		if (dragState.isDragging && dragState.target) {
+			// Get the world space position of the mouse
+			Vector2 mouse = GetMousePosition();
+			Vector2 world = GetScreenToWorld2D(mouse, camera);
+			dragState.targetPosition = vec2(world.x, world.y);
 		}
 
 		// Reset scene :)
