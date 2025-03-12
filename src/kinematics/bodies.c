@@ -19,7 +19,10 @@ Body* bodies_add(Vec2 position, Shape shape, real mass) {
     
 	b->state.mass = mass;
 	b->shape = shape;
-    // b->color = random_colour();
+
+	b->state.angular.acceleration = 0;
+    b->state.angular.velocity = 0;
+    b->state.angular.theta = 0;
 
 	return b;
 }

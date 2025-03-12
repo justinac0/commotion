@@ -29,10 +29,22 @@ void demo_init(Camera2D *camera) {
             S_RECTANGLE),
         10.0f
     );
+
+    b->state.angular.acceleration = 0.5f;
 }
 
-real i = 0;
+void demo_draw() {
+    real x = b->state.position.x;
+    real y = b->state.position.y;
+    real sx = b->shape.size.x;
+    real sy = b->shape.size.y;
+
+    // NOTE: why is this in deg???
+    real theta = b->state.angular.theta * PI/180;
+
+    DrawLine(x, y, x + sx * cosf(theta), y + sx * sinf(theta), GREEN);
+}
+
 void demo_update(real dt) {
-    i+=dt;
-    b->shape.rotation = i;
+
 }

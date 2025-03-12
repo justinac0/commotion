@@ -5,6 +5,7 @@
 #include "../common/defs.h"
 
 void demo_init(Camera2D *camera);
+void demo_draw();
 void demo_update(real dt);
 
 #endif // DEMO_H

@@ -49,6 +49,7 @@ int main(void) {
 			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Fade(MAGENTA, 0.1f));
 		}
 		BeginMode2D(camera);
+		demo_draw();
 		if (target) {
 			camera.target = (Vector2){
 				.x = target->state.position.x,

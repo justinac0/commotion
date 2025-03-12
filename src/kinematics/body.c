@@ -67,5 +67,9 @@ void body_integrate(Body *b, float dt) {
     b->state.position = vec2_addv(b->state.position, vec2_mulr(b->state.velocity, dt));
     b->shape.position = b->state.position;
 
+    b->state.angular.velocity += b->state.angular.acceleration * dt;
+    b->state.angular.theta += b->state.angular.velocity * dt;
+    b->shape.rotation = b->state.angular.theta;
+
     body_clear_forces(b);
 }

@@ -26,19 +26,23 @@ typedef struct Shape {
 
 Shape shape_create(Vec2 position, Vec2 size, real rotation, Color color, ShapeType type);
 
-// TODO: implement angular kinematics
-// 
-// polar: r, angular velocity, angular acceleration 
-// inertia tensor
-// 
-// TODO: implement rectangular kinematics
-// 
+typedef struct Angular {
+    real velocity;
+    real acceleration;
+    real theta;
+} Angular;
+
 typedef struct State {
-    // rect: position, velocity, acceleration
-    Vec2 position, velocity, acceleration;
+    // translational
+    Vec2 position;
+    Vec2 velocity;
+    Vec2 acceleration;
 
+    // rotational
+    Angular angular;
+
+    // misc
     float mass; // kg
-
     Vec2 force;
 } State;
 
