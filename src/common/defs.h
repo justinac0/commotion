@@ -4,8 +4,8 @@
 #include <raylib.h>
 
 // WINDOW CONSTANTS
-#define SCREEN_WIDTH (1280)
-#define SCREEN_HEIGHT (720)
+#define SCREEN_WIDTH (640)
+#define SCREEN_HEIGHT (480)
 #define HALF_SCREEN_WIDTH (SCREEN_WIDTH / 2)
 #define HALF_SCREEN_HEIGHT (SCREEN_HEIGHT / 2)
 

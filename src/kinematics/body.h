@@ -10,6 +10,22 @@
 //       logic.
 #include <raylib.h>
 
+
+typedef enum ShapeType {
+    S_CIRCLE,
+    S_RECTANGLE,
+} ShapeType;
+
+typedef struct Shape {
+    Vec2 position;
+    Vec2 size;
+    real rotation;
+    Color color;
+    ShapeType type;
+} Shape;
+
+Shape shape_create(Vec2 position, Vec2 size, real rotation, Color color, ShapeType type);
+
 // TODO: implement angular kinematics
 // 
 // polar: r, angular velocity, angular acceleration 
@@ -28,8 +44,7 @@ typedef struct State {
 
 typedef struct Body {
     State state;
-    float radius; // TODO: add ability to define shapes...
-    Color color;
+    Shape shape;
 } Body;
 
 void body_draw(Body *b, Body *target);

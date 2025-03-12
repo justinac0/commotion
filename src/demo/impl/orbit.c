@@ -34,9 +34,6 @@ void demo_init(Camera2D *camera) {
     moon = bodies_add(vec2(LUNAR_DISTANCE, 0), MOON_MASS, MOON_RADIUS * VISUAL_SCALING_FACTOR);
     assert(moon);
 
-    a = bodies_add(vec2(LUNAR_DISTANCE+5E7, 0), MOON_MASS/2, MOON_RADIUS/2 * VISUAL_SCALING_FACTOR);
-    assert(a);
-
     #define ROTATION_FORCE 1E32
     // https://gamedev.stackexchange.com/questions/70075/how-can-i-find-the-perpendicular-to-a-2d-vector
     Vec2 direction = vec2_subv(moon->state.position, earth->state.position);
@@ -49,11 +46,5 @@ void demo_init(Camera2D *camera) {
 
 void demo_update(real dt) {
     body_add_force(earth, orbit(moon, earth, G));
-    body_add_force(earth, orbit(a, earth, G));
-
     body_add_force(moon, orbit(earth, moon, G));
-    body_add_force(moon, orbit(a, moon, G));
-
-    body_add_force(a, orbit(earth, a, G));
-    body_add_force(a, orbit(moon, a, G));
 }

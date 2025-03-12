@@ -5,7 +5,7 @@
 Body bodies[MAX_BODIES];
 size_t num_bodies = 0;
 
-Body* bodies_add(Vec2 position, real mass, real radius) {
+Body* bodies_add(Vec2 position, Shape shape, real mass) {
 	if (num_bodies >= MAX_BODIES) {
 		return NULL;
 	}
@@ -18,8 +18,8 @@ Body* bodies_add(Vec2 position, real mass, real radius) {
     b->state.force = vec2(0, 0);
     
 	b->state.mass = mass;
-	b->radius = radius;
-    b->color = random_colour();
+	b->shape = shape;
+    // b->color = random_colour();
 
 	return b;
 }
@@ -50,7 +50,7 @@ bool bodies_get_body(Body* b, Vec2 position) {
 	}
 
 	Vec2 distance = vec2_subv(b->state.position, position);
-	return vec2_mag(distance) <= b->radius;
+	return vec2_mag(distance) <= b->shape.size.x;
 }
 
 void bodies_clear() {

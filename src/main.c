@@ -61,8 +61,9 @@ int main(void) {
 		
 		if (dragState.isDragging && dragState.target && paused) {
 			Body ghost = *dragState.target;
-			ghost.color = Fade(ghost.color, 0.5f);
+			ghost.shape.color = Fade(ghost.shape.color, 0.5f);
 			ghost.state.position = dragState.targetPosition;
+			ghost.shape.position = dragState.targetPosition;
 			body_draw(&ghost, target);
 		}
 		EndMode2D();
@@ -97,6 +98,7 @@ int main(void) {
 		if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
 			if (dragState.isDragging && dragState.target) {
 				dragState.target->state.position = dragState.targetPosition;
+				dragState.target->shape.position = dragState.targetPosition;
 				dragState = DRAGSTATE_NONE;
 			}
 		}

@@ -1,5 +1,7 @@
 #include <assert.h>
 
+#include <raylib.h>
+
 #include "../../common/defs.h"
 #include "../../math/vec2.h"
 #include "../../kinematics/body.h"
@@ -16,14 +18,21 @@ void demo_init(Camera2D *camera) {
 	};
 	camera->target = (Vector2){0};
 	camera->rotation = 0.0f;
-	camera->zoom = 1.0f;;
+	camera->zoom = 1.0f;
 
-    b = bodies_add(vec2(0, 0), 50.0f, 50.0f);
-    assert(b);
+    b = bodies_add(
+        vec2(0, 0),
+        shape_create(vec2(0, 0),
+            vec2(100,50),
+            0,
+            RED,
+            S_RECTANGLE),
+        10.0f
+    );
 }
 
+real i = 0;
 void demo_update(real dt) {
-    body_add_force(b, (Vec2){
-        .x = spring(0, b->state.position.x, b->state.velocity.x, 0.5, 0.5)
-    });
+    i+=dt;
+    b->shape.rotation = i;
 }
