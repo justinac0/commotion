@@ -39,7 +39,7 @@ int main(void) {
 		lastTime = currentTime;
 
 		if (!paused) {
-			accumulator += frameTime * 10.0f;
+			accumulator += frameTime * 50.0f;
 		}
 
 		BeginDrawing();
@@ -49,13 +49,13 @@ int main(void) {
 			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Fade(MAGENTA, 0.1f));
 		}
 		BeginMode2D(camera);
-		demo_draw();
-		if (target) {
-			camera.target = (Vector2){
-				.x = target->state.position.x,
-				.y = target->state.position.y,
-			};
-		}
+		// TODO: Target objects
+		// if (target) {
+		// 	camera.target = (Vector2){
+		// 		.x = target->state.position.x,
+		// 		.y = target->state.position.y,
+		// 	};
+		// }
 		for (size_t i = 0; i < num_bodies; i++) {
 			body_draw(&bodies[i], target);
 		}
@@ -67,6 +67,7 @@ int main(void) {
 			ghost.shape.position = dragState.targetPosition;
 			body_draw(&ghost, target);
 		}
+		demo_draw();
 		EndMode2D();
 
 		draw_menu(target);

@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-W -g -std=c99
 
-LDFLAGS=-lraylib -lm# -lgdi32 -lwinmm
+LDFLAGS=-lraylib -lm -lgdi32 -lwinmm
 APP_NAME=commotion
 EXEC=bin/$(APP_NAME)
 

@@ -28,10 +28,23 @@ void demo_init(Camera2D *camera) {
 	camera->rotation = 0.0f;
 	camera->zoom = 0.45E-6f;
 
-    earth = bodies_add(vec2(0, 0), EARTH_MASS, EARTH_RADIUS * VISUAL_SCALING_FACTOR);
+    earth = bodies_add(vec2(0, 0),
+        shape_create(vec2(0, 0),
+        vec2(EARTH_RADIUS * VISUAL_SCALING_FACTOR,0),
+        0,
+        GREEN,
+        S_CIRCLE), EARTH_MASS
+    );
     assert(earth);
 
-    moon = bodies_add(vec2(LUNAR_DISTANCE, 0), MOON_MASS, MOON_RADIUS * VISUAL_SCALING_FACTOR);
+    moon = bodies_add(vec2(LUNAR_DISTANCE, 0), 
+        shape_create(vec2(0, 0),
+        vec2(MOON_RADIUS * VISUAL_SCALING_FACTOR,0),
+        0,
+        GRAY,
+        S_CIRCLE),
+        MOON_MASS
+    );
     assert(moon);
 
     #define ROTATION_FORCE 1E32
@@ -43,6 +56,8 @@ void demo_init(Camera2D *camera) {
     body_add_force(a, vec2_mulr(force, 0.8));
     #undef ROTATION_FORCE
 }
+
+void demo_draw() {}
 
 void demo_update(real dt) {
     body_add_force(earth, orbit(moon, earth, G));

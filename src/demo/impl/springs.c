@@ -18,12 +18,21 @@ void demo_init(Camera2D *camera) {
 	camera->rotation = 0.0f;
 	camera->zoom = 1.0f;;
 
-    b = bodies_add(vec2(0, 0), 50.0f, 50.0f);
+    b = bodies_add(vec2(0, 0), 
+        shape_create(vec2(0, 0),
+        vec2(25,25),
+        0,
+        RED,
+        S_CIRCLE), 50.0f
+    );
     assert(b);
 }
 
+void demo_draw() {}
+
 void demo_update(real dt) {
     body_add_force(b, (Vec2){
-        .x = spring(0, b->state.position.x, b->state.velocity.x, 0.5, 0.5)
+        .x = spring(0, b->state.position.x, b->state.velocity.x, 10.0, 1.0),
+        .y = spring(0, b->state.position.y, b->state.velocity.y, 10.0, 1.0)
     });
 }

@@ -26,7 +26,7 @@ void demo_init(Camera2D *camera) {
             vec2(100,50),
             0,
             RED,
-            S_RECTANGLE),
+            S_CIRCLE),
         10.0f
     );
 
